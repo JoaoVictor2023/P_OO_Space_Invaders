@@ -6,9 +6,9 @@
         Random alea = new Random();
 
         //public int charge = 1000;                     // La charge actuelle de la batterie
-        public string name;                           // Un nom
-        public int x ;                                // Position en X depuis la gauche de l'espace aérien
-        public int y;                                 // Position en Y depuis le haut de l'espace aérien
+        public string name;                             // Un nom
+        public int x ;                                  // Position en X depuis la gauche de l'espace aérien
+        public int y;                                   // Position en Y depuis le haut de l'espace aérien
 
 
         // Cette méthode calcule le nouvel état dans lequel le drone se trouve après

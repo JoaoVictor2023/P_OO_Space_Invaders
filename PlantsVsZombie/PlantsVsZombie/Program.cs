@@ -13,15 +13,15 @@ namespace PlantsVsZombie
             ApplicationConfiguration.Initialize();
 
             // Création de la flotte de drones
-            List<Zombie> fleet= new List<Zombie>();
-            Zombie drone = new Zombie();
-            drone.x = Garden.WIDTH / 1;
-            drone.y = Garden.HEIGHT / Garden.HEIGHT + 70;
+            List<Zombie> hordeZombie= new List<Zombie>();
+            Zombie zombie = new Zombie();
+            zombie.x = Garden.WIDTH / 1;
+            zombie.y = Garden.HEIGHT / Garden.HEIGHT + 50;
             //drone.name = "Zombie";
-            fleet.Add(drone);
+            hordeZombie.Add(zombie);
 
             // Démarrage
-            Application.Run(new Garden(fleet));
+            Application.Run(new Garden(hordeZombie));
         }
     }
 }

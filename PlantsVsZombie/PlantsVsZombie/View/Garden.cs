@@ -2,10 +2,10 @@ namespace PlantsVsZombie
 {
     public partial class Garden : Form
     {
-        public static readonly int WIDTH = 1200;        // Dimensions of the airspace
+        public static readonly int WIDTH = 1200;        
         public static readonly int HEIGHT = 600;
 
-        // La flotte est l'ensemble des drones qui évoluent dans notre espace aérien
+        // La flotte est l'ensemble des zombies dans notre jardin
         private List<Zombie> fleet;
 
         BufferedGraphicsContext currentContext;
@@ -13,14 +13,16 @@ namespace PlantsVsZombie
 
         // Image d'arrière-plan
         private Image backgroundImage;
+        private bool backgroundLoaded = false;
 
-        // Initialisation de l'espace aérien avec un certain nombre de drones
+        // Initialisation du jardin avec un certain nombre de zombies
         public Garden(List<Zombie> fleet)
         {
             InitializeComponent();
 
             // Charger l'image d'arrière-plan
             backgroundImage = Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\backgroundJeu.png");
+            backgroundLoaded = true;
 
             // Gets a reference to the current BufferedGraphicsContext
             currentContext = BufferedGraphicsManager.Current;
@@ -33,21 +35,16 @@ namespace PlantsVsZombie
         // Affichage de la situation actuelle
         private void Render()
         {
-            // Dessiner l'image d'arrière-plan
-            if (backgroundImage != null)
+            // Dessiner l'image d'arrière-plan une seule fois et la conserver en mémoire
+            if (backgroundLoaded && backgroundImage != null)
             {
                 airspace.Graphics.DrawImage(backgroundImage, new Rectangle(0, 0, WIDTH, HEIGHT));
             }
-            else
-            {
-                // Si aucune image n'est chargée, on utilise une couleur de fond par défaut
-                airspace.Graphics.Clear(Color.AliceBlue);
-            }
 
-            // Dessiner les drones
-            foreach (Zombie drone in fleet)
+            // Dessiner les zombies
+            foreach (Zombie zombie in fleet)
             {
-                drone.Render(airspace);
+                zombie.Render(airspace);
             }
 
             airspace.Render();
@@ -56,9 +53,9 @@ namespace PlantsVsZombie
         // Calcul du nouvel état après que 'interval' millisecondes se sont écoulées
         private void Update(int interval)
         {
-            foreach (Zombie drone in fleet)
+            foreach (Zombie zombie in fleet)
             {
-                drone.Update(interval);
+                zombie.Update(interval);
             }
         }
 
