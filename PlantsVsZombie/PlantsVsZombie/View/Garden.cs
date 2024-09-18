@@ -6,7 +6,7 @@ namespace PlantsVsZombie
         public static readonly int HEIGHT = 600;
 
         // La flotte est l'ensemble des zombies dans notre jardin
-        private List<Zombie> fleet;
+        private List<DrawZombie> fleet;
 
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
@@ -16,7 +16,7 @@ namespace PlantsVsZombie
         private bool backgroundLoaded = false;
 
         // Initialisation du jardin avec un certain nombre de zombies
-        public Garden(List<Zombie> fleet)
+        public Garden(List<DrawZombie> fleet)
         {
             InitializeComponent();
 
@@ -42,7 +42,7 @@ namespace PlantsVsZombie
             }
 
             // Dessiner les zombies
-            foreach (Zombie zombie in fleet)
+            foreach (DrawZombie zombie in fleet.ToList())
             {
                 zombie.Render(airspace);
             }
@@ -53,9 +53,27 @@ namespace PlantsVsZombie
         // Calcul du nouvel état après que 'interval' millisecondes se sont écoulées
         private void Update(int interval)
         {
-            foreach (Zombie zombie in fleet)
+            // Créer une liste temporaire pour stocker les zombies à retirer
+            List<DrawZombie> zombiesToRemove = new List<DrawZombie>();
+
+            // Utiliser une copie de la liste pour éviter les modifications concurrentes
+            var zombiesToUpdate = new List<DrawZombie>(fleet);
+
+            foreach (DrawZombie zombie in zombiesToUpdate)
             {
                 zombie.Update(interval);
+
+                // Vérifier si le zombie est hors des limites et doit être retiré
+                if (zombie.IsOutOfBounds(300)) // 300 pixels de largeur comme seuil
+                {
+                    zombiesToRemove.Add(zombie);
+                }
+            }
+
+            // Supprimer les zombies hors des limites
+            foreach (DrawZombie zombie in zombiesToRemove)
+            {
+                fleet.Remove(zombie);
             }
         }
 

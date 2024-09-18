@@ -5,57 +5,33 @@ using System.Windows.Forms;
 
 namespace PlantsVsZombie
 {
-    public partial class Zombie : Form
+    public partial class DrawZombie : Form
     {
         private Image droneImage;
-        private Timer animationTimer;
 
-        public Zombie()
+        public DrawZombie()
         {
             // Charger l'image animée du drone
-            droneImage = Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\walkMainZombie.gif");
+            droneImage = Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\mainZombie.png");
 
-            // Initialiser le Timer pour mettre à jour les frames
-            animationTimer = new Timer();
-            animationTimer.Interval = 100; // Ajustez l'intervalle en fonction de la vitesse de l'animation
-            animationTimer.Tick += new EventHandler(OnAnimationTick);
-            animationTimer.Start();
-
-            // Démarrer l'animation
-            ImageAnimator.Animate(droneImage, OnFrameChanged);
         }
-
-        private void OnAnimationTick(object sender, EventArgs e)
+        public bool IsOutOfBounds(int widthThreshold)
         {
-            // Mettre à jour les frames de l'animation
-            ImageAnimator.UpdateFrames();
-            // Redessiner le contrôle pour afficher la nouvelle frame
-            this.Invalidate();
+            return x <= widthThreshold;
+        }
+        public void Render(BufferedGraphics drawingSpace)
+        {
+            // Dessiner l'image du drone au lieu de l'ellipse
+            if (droneImage != null)
+                drawingSpace.Graphics.DrawImage(droneImage, new Rectangle(x - 16, y - 16, 85, 128));
+            // Afficher le texte
+            //drawingSpace.Graphics.DrawString($"{this}", TextHelpers.drawFont, TextHelpers.writingBrush, x + 5, y - 5);
         }
 
         private void OnFrameChanged(object o, EventArgs e)
         {
             // Redessiner le contrôle pour afficher la nouvelle frame
             this.Invalidate();
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            // Dessiner l'image animée du drone
-            if (droneImage != null)
-            {
-                // Mettre à jour l'animation avant de dessiner
-                ImageAnimator.UpdateFrames();
-                e.Graphics.DrawImage(droneImage, new Rectangle(0, 0, 75, 150)); // Ajustez la position et la taille selon vos besoins
-            }
-        }
-
-        [STAThread]
-        public static void Main()
-        {
-            Application.Run(new Zombie());
         }
     }
 }

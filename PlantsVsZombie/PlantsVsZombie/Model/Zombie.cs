@@ -1,7 +1,7 @@
 ﻿namespace PlantsVsZombie
 {
     // Cette partie de la classe Drone définit ce qu'est un drone par un modèle numérique
-    public partial class Zombie
+    public partial class DrawZombie
     {
         Random alea = new Random();
 
