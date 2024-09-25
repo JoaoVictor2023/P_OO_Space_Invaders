@@ -7,6 +7,9 @@ namespace PlantsVsZombie
 
         // La flotte est l'ensemble des zombies dans notre jardin
         private List<DrawZombie> fleet;
+        private List<DrawPlants> fleetPlantes;
+        private DrawBackgroundPlants fond;
+        private Image[] plantImages;
 
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
@@ -16,7 +19,7 @@ namespace PlantsVsZombie
         private bool backgroundLoaded = false;
 
         // Initialisation du jardin avec un certain nombre de zombies
-        public Garden(List<DrawZombie> fleet)
+        public Garden(List<DrawZombie> fleet, DrawBackgroundPlants fond)
         {
             InitializeComponent();
 
@@ -24,12 +27,24 @@ namespace PlantsVsZombie
             backgroundImage = Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\backgroundJeu.png");
             backgroundLoaded = true;
 
+            // Charger les images pour les petits rectangles
+            plantImages = new Image[]
+            {
+                Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\mainPlantPetit.png"),
+                Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\sunFlowerPetit.png"),
+                Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\wallNutPetit.png"),
+                Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\blueMainPlantPetit.png"),
+                Image.FromFile("c:\\users\\pg05lby\\documents\\github\\p_oo_space_invaders\\images pvz\\mainplants2xPetit.png"),
+            };
+
             // Gets a reference to the current BufferedGraphicsContext
             currentContext = BufferedGraphicsManager.Current;
             // Creates a BufferedGraphics instance associated with this form, and with
             // dimensions the same size as the drawing surface of the form.
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
             this.fleet = fleet;
+            this.fleetPlantes = fleetPlantes;
+            this.fond = fond;
         }
 
         // Affichage de la situation actuelle
@@ -46,6 +61,9 @@ namespace PlantsVsZombie
             {
                 zombie.Render(airspace);
             }
+
+            // Dessiner les plantes (utiliser le tableau d'images pour les petits rectangles)
+            fond.Render(airspace, plantImages); // Passer le tableau d'images
 
             airspace.Render();
         }

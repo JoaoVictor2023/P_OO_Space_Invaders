@@ -28,24 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.ticker = new System.Windows.Forms.Timer(this.components);
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            ticker = new System.Windows.Forms.Timer(components);
+            SuspendLayout();
             // 
             // ticker
             // 
-            this.ticker.Enabled = true;
-            this.ticker.Tick += new System.EventHandler(this.NewFrame);
+            ticker.Enabled = true;
+            ticker.Tick += NewFrame;
             // 
-            // AirSpace
+            // Garden
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(WIDTH, HEIGHT);
-            this.Name = "AirSpace";
-            this.Text = "Garden";
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(WIDTH, HEIGHT);
+            Name = "Garden";
+            Text = "Garden";
+            ResumeLayout(false);
         }
 
         #endregion

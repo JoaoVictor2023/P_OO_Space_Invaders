@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Windows.Forms;
 
 namespace PlantsVsZombie
 {
-    public partial class DrawZombie
+    public partial class DrawPlants
     {
         private Image droneImage;
 
-        public DrawZombie()
+        public DrawPlants()
         {
             // Charger l'image animée du drone
-            droneImage = Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\mainZombie.png");
+            droneImage = Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\mainPlant.png");
 
         }
         public bool IsOutOfBounds(int widthThreshold)
@@ -24,8 +22,6 @@ namespace PlantsVsZombie
             // Dessiner l'image du drone au lieu de l'ellipse
             if (droneImage != null)
                 drawingSpace.Graphics.DrawImage(droneImage, new Rectangle(x - 16, y - 16, 85, 128));
-            // Afficher le texte
-            //drawingSpace.Graphics.DrawString($"{this}", TextHelpers.drawFont, TextHelpers.writingBrush, x + 5, y - 5);
         }
     }
 }

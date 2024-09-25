@@ -10,6 +10,9 @@ namespace PlantsVsZombie
         private static List<(int x, int y)> positionsPredifinies;
         private static Random random = new Random();
         private static System.Timers.Timer zombieSpawnTimer;
+        private static List<DrawPlants> plantes = new List<DrawPlants>();
+        private static DrawBackgroundPlants fond = new DrawBackgroundPlants();
+
 
         /// <summary>
         ///  The main entry point for the application.
@@ -20,7 +23,7 @@ namespace PlantsVsZombie
             // Configuration de l'application
             ApplicationConfiguration.Initialize();
 
-            // Définir les positions prédéfinies
+            // Définir les positions prédéfinies pour leys zombies
             positionsPredifinies = new List<(int x, int y)>
             {
                 (1200, 70),
@@ -35,8 +38,11 @@ namespace PlantsVsZombie
             zombieSpawnTimer.Elapsed += OnZombieSpawn;
             SetRandomTimerInterval(); // Définit l'intervalle initial
 
+
+
+
             // Démarrage du jardin (sans zombies pour l'instant)
-            Application.Run(new Garden(hordeZombie));
+            Application.Run(new Garden(hordeZombie, fond));
         }
 
         // Méthode appelée à chaque "tick" du Timer
