@@ -1,9 +1,8 @@
+using System.Drawing;
 namespace PlantsVsZombie
 {
     public partial class Garden : Form
     {
-        public static readonly int WIDTH = 1200;        
-        public static readonly int HEIGHT = 600;
 
         // La flotte est l'ensemble des zombies dans notre jardin
         private List<DrawZombie> fleet;
@@ -37,6 +36,9 @@ namespace PlantsVsZombie
                 Image.FromFile("c:\\users\\pg05lby\\documents\\github\\p_oo_space_invaders\\images pvz\\mainplants2xPetit.png"),
             };
 
+            
+
+
             // Gets a reference to the current BufferedGraphicsContext
             currentContext = BufferedGraphicsManager.Current;
             // Creates a BufferedGraphics instance associated with this form, and with
@@ -46,6 +48,14 @@ namespace PlantsVsZombie
             this.fleetPlantes = fleetPlantes;
             this.fond = fond;
         }
+            string[] plantTexts = new string[]
+            {
+                $"50 {Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\wallNutPetit.png")}",
+                "Sunflower",
+                "Wall-Nut",
+                "Ice Shooter",
+                "Cherry Bomb"
+            };
 
         // Affichage de la situation actuelle
         private void Render()
@@ -53,7 +63,7 @@ namespace PlantsVsZombie
             // Dessiner l'image d'arrière-plan une seule fois et la conserver en mémoire
             if (backgroundLoaded && backgroundImage != null)
             {
-                airspace.Graphics.DrawImage(backgroundImage, new Rectangle(0, 0, WIDTH, HEIGHT));
+                airspace.Graphics.DrawImage(backgroundImage, new Rectangle(0, 0, TextHelpers.WIDTH, TextHelpers.HEIGHT));
             }
 
             // Dessiner les zombies
@@ -63,7 +73,7 @@ namespace PlantsVsZombie
             }
 
             // Dessiner les plantes (utiliser le tableau d'images pour les petits rectangles)
-            fond.Render(airspace, plantImages); // Passer le tableau d'images
+            fond.Render(airspace, plantImages, plantTexts);
 
             airspace.Render();
         }

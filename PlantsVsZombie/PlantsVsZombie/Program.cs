@@ -78,7 +78,7 @@ namespace PlantsVsZombie
         // Méthode pour définir un intervalle aléatoire entre 5 et 10 secondes
         private static void SetRandomTimerInterval()
         {
-            double interval = random.Next(5000, 10000); // Intervalle entre 5000 ms (5 secondes) et 10000 ms (10 secondes)
+            int interval = random.Next(5000, 10000); // Intervalle entre 5000 ms (5 secondes) et 10000 ms (10 secondes)
             zombieSpawnTimer.Interval = interval;
             zombieSpawnTimer.Start(); // Re-démarrer le timer avec le nouvel intervalle
             Console.WriteLine("Prochain zombie dans " + interval + " ms");

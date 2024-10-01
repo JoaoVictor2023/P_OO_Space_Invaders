@@ -41,7 +41,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(WIDTH, HEIGHT);
+            ClientSize = new Size(TextHelpers.WIDTH, TextHelpers.HEIGHT);
             Name = "Garden";
             Text = "Garden";
             ResumeLayout(false);

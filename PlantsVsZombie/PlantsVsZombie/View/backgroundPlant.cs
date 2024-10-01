@@ -13,10 +13,13 @@ namespace PlantsVsZombie
             return x <= widthThreshold;
         }
 
-        public void Render(BufferedGraphics drawingSpace, Image[] plantImages)
+        public void Render(BufferedGraphics drawingSpace, Image[] images, string[] texts)
         {
             // Couleur de fond marron
             Color backgroundColor = ColorTranslator.FromHtml("#643410");
+
+            // Couleur des petits rectangles orange
+            Color rectangleColor = ColorTranslator.FromHtml("#d96b1c");
 
             // Dessiner le rectangle de fond marron
             Rectangle backgroundRect = new Rectangle(x - 16, y - 16, 197, 650);
@@ -30,12 +33,20 @@ namespace PlantsVsZombie
             int rectHeight = 90;
             int rectSpacing = 15; // Espacement ajusté entre les rectangles
             int startX = x; // Position X de départ des rectangles
-            int startY = y + 75; // Ajuster l'espace du haut à 67 pixels
+            int startY = y + 67; // Ajuster l'espace du haut à 67 pixels
             int cornerRadius = 20; // Rayon des coins arrondis
 
-            using (Brush rectangleBrush = new SolidBrush(ColorTranslator.FromHtml("#d96b1c")))
+            // Taille fixe pour les images des plantes
+            int plantImageWidth = 40;
+            int plantImageHeight = 40;
+
+            // Police et couleur du texte
+            Font textFont = new Font("Arial", 15);
+            Brush textBrush = Brushes.Black; // Couleur du texte
+
+            using (Brush rectangleBrush = new SolidBrush(rectangleColor))
             {
-                for (int i = 0; i < 5; i++) // Dessiner 5 petits rectangles
+                for (int i = 0; i < images.Length; i++) // Dessiner les petits rectangles en fonction du nombre d'images
                 {
                     // Calculer la position de chaque petit rectangle
                     int rectX = startX + (197 - rectWidth) / 2 - 10; // Déplacez de 20 pixels à gauche
@@ -45,14 +56,20 @@ namespace PlantsVsZombie
                     GraphicsPath path = RoundedRectangle(rectX, rectY, rectWidth, rectHeight, cornerRadius);
                     drawingSpace.Graphics.FillPath(rectangleBrush, path);
 
-                    // Dessiner l'image à l'intérieur du rectangle, à gauche
-                    Image image = plantImages[i % plantImages.Length]; // Assurez-vous de ne pas dépasser la longueur du tableau
-                    int imageX = rectX + 5; // Position X de l'image (décalé de 10 pixels à partir de la gauche)
-                    int imageY = rectY + (rectHeight - image.Height) / 2; // Centrer verticalement
-                    drawingSpace.Graphics.DrawImage(image, new Rectangle(imageX, imageY, image.Width, image.Height)); // Dessiner l'image
+                    // Dessiner l'image de la plante à une taille fixe
+                    Rectangle imageRect = new Rectangle(rectX + 10, rectY + (rectHeight - plantImageHeight) / 2, plantImageWidth, plantImageHeight);
+                    drawingSpace.Graphics.DrawImage(images[i], imageRect);
+
+                    // Dessiner le texte personnalisé à droite de l'image
+                    string text = texts[i]; // Texte personnalisé pour chaque plante
+                    int textX = imageRect.Right + 10; // Placer le texte à droite de l'image
+                    int textY = rectY + (rectHeight - textFont.Height) / 2; // Centrer verticalement le texte dans le rectangle
+                    drawingSpace.Graphics.DrawString(text, textFont, textBrush, textX, textY);
                 }
             }
         }
+
+
 
 
         // Méthode pour dessiner un rectangle avec des coins arrondis
