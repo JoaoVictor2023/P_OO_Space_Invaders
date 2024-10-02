@@ -22,7 +22,7 @@ namespace PlantsVsZombie
             Color rectangleColor = ColorTranslator.FromHtml("#d96b1c");
 
             // Dessiner le rectangle de fond marron
-            Rectangle backgroundRect = new Rectangle(x - 16, y - 16, 197, 650);
+            Rectangle backgroundRect = new Rectangle(x - 16, y + (75-16), 197, 550);
             using (Brush backgroundBrush = new SolidBrush(backgroundColor))
             {
                 drawingSpace.Graphics.FillRectangle(backgroundBrush, backgroundRect);
@@ -41,7 +41,7 @@ namespace PlantsVsZombie
             int plantImageHeight = 40;
 
             // Police et couleur du texte
-            Font textFont = new Font("Arial", 15);
+            Font textFont = new Font("Arial", 25);
             Brush textBrush = Brushes.Black; // Couleur du texte
 
             using (Brush rectangleBrush = new SolidBrush(rectangleColor))
@@ -49,7 +49,7 @@ namespace PlantsVsZombie
                 for (int i = 0; i < images.Length; i++) // Dessiner les petits rectangles en fonction du nombre d'images
                 {
                     // Calculer la position de chaque petit rectangle
-                    int rectX = startX + (197 - rectWidth) / 2 - 10; // Déplacez de 20 pixels à gauche
+                    int rectX = startX + (197 - rectWidth) / 2 - 10; // Déplacez de 10 pixels à gauche
                     int rectY = startY + i * (rectHeight + rectSpacing); // Espacement ajusté entre les rectangles
 
                     // Dessiner le rectangle avec des coins arrondis
@@ -60,18 +60,16 @@ namespace PlantsVsZombie
                     Rectangle imageRect = new Rectangle(rectX + 10, rectY + (rectHeight - plantImageHeight) / 2, plantImageWidth, plantImageHeight);
                     drawingSpace.Graphics.DrawImage(images[i], imageRect);
 
-                    // Dessiner le texte personnalisé à droite de l'image
+                    // Dessiner le texte personnalisé (le prix et/ou le nom) à droite de l'image
                     string text = texts[i]; // Texte personnalisé pour chaque plante
                     int textX = imageRect.Right + 10; // Placer le texte à droite de l'image
                     int textY = rectY + (rectHeight - textFont.Height) / 2; // Centrer verticalement le texte dans le rectangle
+
+                    // Vérifiez que le texte n'est pas derrière le fond
                     drawingSpace.Graphics.DrawString(text, textFont, textBrush, textX, textY);
                 }
             }
         }
-
-
-
-
         // Méthode pour dessiner un rectangle avec des coins arrondis
         private GraphicsPath RoundedRectangle(int x, int y, int width, int height, int radius)
         {
