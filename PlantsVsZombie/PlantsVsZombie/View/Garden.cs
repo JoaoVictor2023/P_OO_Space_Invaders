@@ -34,7 +34,7 @@ namespace PlantsVsZombie
                 Image.FromFile("c:\\users\\pg05lby\\documents\\github\\p_oo_space_invaders\\images pvz\\mainplants2xPetit.png"),
             };
 
-            
+
 
 
             // Gets a reference to the current BufferedGraphicsContext
@@ -46,14 +46,14 @@ namespace PlantsVsZombie
             this.fleetPlantes = fleetPlantes;
             this.fond = fond;
         }
-            string[] plantTexts = new string[]
-            {
+        string[] plantTexts = new string[]
+        {
                 "100",
                 "50",
                 "50",
                 "150",
                 "200"
-            };
+        };
 
         // Affichage de la situation actuelle
         private void Render()
@@ -70,11 +70,7 @@ namespace PlantsVsZombie
                 zombie.Render(airspace);
             }
 
-            // Dessiner les plantes
-            foreach (var plant in fleetPlantes)
-            {
-                plant.Render(airspace); // Appelez la méthode Render de chaque plante
-            }
+            fond.Render(airspace, plantImages, plantTexts);
 
             airspace.Render();
         }
@@ -158,35 +154,40 @@ namespace PlantsVsZombie
 
                 MessageBox.Show("Plante placée !");
             }
-            else{
+            else
+            {
                 MessageBox.Show("Argent insuffisant !");
             }
         }
         protected override void OnMouseClick(MouseEventArgs e)
         {
-            // Vérifiez si une plante a été cliquée
-            foreach (var plant in fleetPlantes)
+            if (false)
             {
-                // Vérifiez si la souris a cliqué sur la plante
-                if (e.X >= plant.x - 16 && e.X <= plant.x + 69 && e.Y >= plant.y - 16 && e.Y <= plant.y + 112)
+                // Vérifiez si une plante a été cliquée
+                foreach (var plant in fleetPlantes)
                 {
-                    // Sélectionnez la plante
-                    plant.Select();
-                    break; // Sortez de la boucle après avoir sélectionné une plante
+                    // Vérifiez si la souris a cliqué sur la plante
+                    if (e.X >= plant.x - 16 && e.X <= plant.x + 69 && e.Y >= plant.y - 16 && e.Y <= plant.y + 112)
+                    {
+                        // Sélectionnez la plante
+                        plant.Select();
+                        break; // Sortez de la boucle après avoir sélectionné une plante
+                    }
                 }
-            }
 
-            // Si une plante est sélectionnée, déplacez-la
-            foreach (var plant in fleetPlantes)
-            {
-                if (plant.IsSelected())
+                // Si une plante est sélectionnée, déplacez-la
+                foreach (var plant in fleetPlantes)
                 {
-                    // Mettez à jour la position de la plante
-                    plant.x = e.X; // Ajustez la position X
-                    plant.y = e.Y; // Ajustez la position Y
-                    plant.Deselect(); // Désélectionnez après le placement
-                    break; // Sortez de la boucle après avoir déplacé la plante
+                    if (plant.IsSelected())
+                    {
+                        // Mettez à jour la position de la plante
+                        plant.x = e.X; // Ajustez la position X
+                        plant.y = e.Y; // Ajustez la position Y
+                        plant.Deselect(); // Désélectionnez après le placement
+                        break; // Sortez de la boucle après avoir déplacé la plante
+                    }
                 }
+
             }
         }
         // Calcul du nouvel état après que 'interval' millisecondes se sont écoulées
@@ -218,7 +219,7 @@ namespace PlantsVsZombie
             {
                 fleet.Remove(zombie);
             }
-        }
+        } //fin Update
 
 
         // Méthode appelée à chaque frame
@@ -227,5 +228,5 @@ namespace PlantsVsZombie
             this.Update(ticker.Interval);
             this.Render();
         }
-    }
+    } //fin class garden
 }
