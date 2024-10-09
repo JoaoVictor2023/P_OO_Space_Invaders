@@ -80,9 +80,13 @@ namespace PlantsVsZombie
                 {
                     // Réduire l'argent du joueur par le coût de la plante
                     argentJoueur -= coutPlantes[i];
-                    if (true)
+                    if (coutPlantes[i] == 1)
                     {
-
+                        Thread.Sleep(2000);
+                        string texteStatut = $"Argent: {argentJoueur +25} | Vies: {viesJoueur}";
+                        Font policeStatut = new Font("Arial", 20);
+                        Brush pinceauStatut = Brushes.Black;
+                        airspace.Graphics.DrawString(texteStatut, policeStatut, pinceauStatut, 10, 10); // 10,10 correspond à la position sur l'écran
                     }
                     // Quittez la boucle après avoir trouvé le rectangle cliqué
                     break;
