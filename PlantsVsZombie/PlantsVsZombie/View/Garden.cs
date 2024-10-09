@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic.Devices;
 using System.Drawing;
 namespace PlantsVsZombie
 {
@@ -11,41 +12,42 @@ namespace PlantsVsZombie
         private Image[] plantImages;
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
+        List<DrawZombie> zombiesASupprimer = new List<DrawZombie>();
+
 
         private Image backgroundImage;
         private bool backgroundLoaded = false;
 
-        // Initialisation du jardin avec un certain nombre de zombies
+
         public Garden(List<DrawZombie> fleet, DrawBackgroundPlants fond)
         {
             InitializeComponent();
 
-            // Charger l'image d'arrière-plan
-            backgroundImage = Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\backgroundJeu.png");
+            // Charger l'image d'arrière-plan et d'autres initialisations
+            backgroundImage = Image.FromFile(@"..\..\..\Images PVZ\backgroundJeu.png");
             backgroundLoaded = true;
 
-            // Charger les images pour les petits rectangles
+
+            // Initialisation des images et des variables
             plantImages = new Image[]
             {
-                Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\mainPlantPetit.png"),
-                Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\sunFlowerPetit.png"),
-                Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\wallNutPetit.png"),
-                Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\blueMainPlantPetit.png"),
-                Image.FromFile("c:\\users\\pg05lby\\documents\\github\\p_oo_space_invaders\\images pvz\\mainplants2xPetit.png"),
+                Image.FromFile(@"..\..\..\Images PVZ\mainPlantPetit.png"),
+                Image.FromFile(@"..\..\..\Images PVZ\sunFlowerPetit.png"),
+                Image.FromFile(@"..\..\..\Images PVZ\wallNutPetit.png"),
+                Image.FromFile(@"..\..\..\Images PVZ\blueMainPlantPetit.png"),
+                Image.FromFile(@"..\..\..\Images PVZ\mainplants2xPetit.png"),
             };
 
-
-
-
-            // Gets a reference to the current BufferedGraphicsContext
+            // Gestion du BufferedGraphics
             currentContext = BufferedGraphicsManager.Current;
-            // Creates a BufferedGraphics instance associated with this form, and with
-            // dimensions the same size as the drawing surface of the form.
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
+
             this.fleet = fleet;
-            this.fleetPlantes = fleetPlantes;
+            this.fleetPlantes = new List<DrawPlants>();
             this.fond = fond;
+            this.MouseClick += new MouseEventHandler(Garden_MouseClick);
         }
+        //fin garden
         string[] plantTexts = new string[]
         {
                 "100",
@@ -54,15 +56,53 @@ namespace PlantsVsZombie
                 "150",
                 "200"
         };
+        private void Garden_MouseClick(object sender, MouseEventArgs e)
+        {
+            // Définir les dimensions de chaque rectangle orange
+            int rectWidth = 165;
+            int rectHeight = 90;
 
+            // Positions Y des rectangles
+            int startY = 67; // Position de départ
+            int spacing = 15; // Espacement entre les rectangles
+
+            // Coûts des plantes
+            int[] coutPlantes = { 100, 50, 50, 150, 200 }; // Coûts des plantes
+
+            // Vérifiez si le clic de la souris est dans chaque rectangle
+            for (int i = 0; i < coutPlantes.Length; i++)
+            {
+                int rectX = 50; // Position X fixe pour tous les rectangles
+                int rectY = startY + i * (rectHeight + spacing); // Calcul de la position Y
+
+                // Vérifiez si le clic de la souris est dans le rectangle
+                if (e.X >= rectX && e.X <= rectX + rectWidth && e.Y >= rectY && e.Y <= rectY + rectHeight)
+                {
+                    // Réduire l'argent du joueur par le coût de la plante
+                    argentJoueur -= coutPlantes[i];
+                    if (true)
+                    {
+
+                    }
+                    // Quittez la boucle après avoir trouvé le rectangle cliqué
+                    break;
+                }
+            }
+        }
         // Affichage de la situation actuelle
         private void Render()
         {
-            // Dessiner l'image d'arrière-plan une seule fois et la conserver en mémoire
+            // Dessiner le fond
             if (backgroundLoaded && backgroundImage != null)
             {
                 airspace.Graphics.DrawImage(backgroundImage, new Rectangle(0, 0, TextHelpers.WIDTH, TextHelpers.HEIGHT));
             }
+
+            // Afficher l'argent et les vies du joueur
+            string texteStatut = $"Argent: {argentJoueur} | Vies: {viesJoueur}";
+            Font policeStatut = new Font("Arial", 20);
+            Brush pinceauStatut = Brushes.Black;
+            airspace.Graphics.DrawString(texteStatut, policeStatut, pinceauStatut, 10, 10); // 10,10 correspond à la position sur l'écran
 
             // Dessiner les zombies
             foreach (DrawZombie zombie in fleet.ToList())
@@ -70,10 +110,12 @@ namespace PlantsVsZombie
                 zombie.Render(airspace);
             }
 
+            // Dessiner les plantes
             fond.Render(airspace, plantImages, plantTexts);
 
             airspace.Render();
         }
+
 
         private bool PeutAcheterPlante(int coutPlante)
         {
@@ -159,41 +201,11 @@ namespace PlantsVsZombie
                 MessageBox.Show("Argent insuffisant !");
             }
         }
-        protected override void OnMouseClick(MouseEventArgs e)
-        {
-            if (false)
-            {
-                // Vérifiez si une plante a été cliquée
-                foreach (var plant in fleetPlantes)
-                {
-                    // Vérifiez si la souris a cliqué sur la plante
-                    if (e.X >= plant.x - 16 && e.X <= plant.x + 69 && e.Y >= plant.y - 16 && e.Y <= plant.y + 112)
-                    {
-                        // Sélectionnez la plante
-                        plant.Select();
-                        break; // Sortez de la boucle après avoir sélectionné une plante
-                    }
-                }
 
-                // Si une plante est sélectionnée, déplacez-la
-                foreach (var plant in fleetPlantes)
-                {
-                    if (plant.IsSelected())
-                    {
-                        // Mettez à jour la position de la plante
-                        plant.x = e.X; // Ajustez la position X
-                        plant.y = e.Y; // Ajustez la position Y
-                        plant.Deselect(); // Désélectionnez après le placement
-                        break; // Sortez de la boucle après avoir déplacé la plante
-                    }
-                }
-
-            }
-        }
         // Calcul du nouvel état après que 'interval' millisecondes se sont écoulées
         private void Update(int interval)
         {
-            List<DrawZombie> zombiesASupprimer = new List<DrawZombie>();
+
             var zombiesAMettreAJour = new List<DrawZombie>(fleet);
 
             foreach (DrawZombie zombie in zombiesAMettreAJour)
@@ -205,11 +217,9 @@ namespace PlantsVsZombie
                 {
                     zombiesASupprimer.Add(zombie);
                     viesJoueur--; // Réduire une vie lorsque le zombie dépasse les limites
-
                     if (viesJoueur <= 0)
                     {
-                        MessageBox.Show("Vous avez perdu !");
-                        Application.Exit(); // Ferme l'application
+                        Environment.Exit(0);
                     }
                 }
             }
@@ -228,5 +238,5 @@ namespace PlantsVsZombie
             this.Update(ticker.Interval);
             this.Render();
         }
-    } //fin class garden
-}
+    }//fin class garden
+}//fin namespace

@@ -11,7 +11,7 @@ namespace PlantsVsZombie
         public DrawZombie()
         {
             // Charger l'image animée du drone
-            droneImage = Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\mainZombie.png");
+            droneImage = Image.FromFile(@"..\..\..\Images PVZ\mainZombie.png");
 
         }
         public bool IsOutOfBounds(int widthThreshold)

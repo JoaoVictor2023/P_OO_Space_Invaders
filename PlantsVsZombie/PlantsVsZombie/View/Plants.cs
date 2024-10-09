@@ -11,7 +11,7 @@ namespace PlantsVsZombie
         public DrawPlants()
         {
             // Charger l'image animée de la plante
-            droneImage = Image.FromFile("C:\\Users\\pg05lby\\Documents\\GitHub\\P_OO_Space_Invaders\\Images PVZ\\mainPlant.png");
+            droneImage = Image.FromFile(@"..\..\..\Images PVZ\mainPlant.png");
             isSelected = false; // Initialiser la sélection à faux
         }
 

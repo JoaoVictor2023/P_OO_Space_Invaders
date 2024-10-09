@@ -17,15 +17,22 @@ namespace PlantsVsZombie
         {
             // Couleur de fond marron
             Color backgroundColor = ColorTranslator.FromHtml("#643410");
+            Color backgroundColor2 = Color.FromArgb(128, 255, 255, 255);
 
             // Couleur des petits rectangles orange
             Color rectangleColor = ColorTranslator.FromHtml("#d96b1c");
 
             // Dessiner le rectangle de fond marron
-            Rectangle backgroundRect = new Rectangle(x - 16, y + (75-16), 197, 550);
+            Rectangle backgroundRect = new Rectangle(x - 16, y + (75 - 16), 197, 550);
+            Rectangle backgroundRect2 = new Rectangle(x - 16, y, 350, 55);
             using (Brush backgroundBrush = new SolidBrush(backgroundColor))
             {
                 drawingSpace.Graphics.FillRectangle(backgroundBrush, backgroundRect);
+            }
+            using (Brush backgroundBrush = new SolidBrush(backgroundColor2))
+            {
+                drawingSpace.Graphics.FillRectangle(backgroundBrush, backgroundRect2);
+
             }
 
             // Dessiner les petits rectangles orange à l'intérieur avec des coins arrondis
