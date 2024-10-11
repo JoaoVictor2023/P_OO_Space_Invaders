@@ -13,6 +13,7 @@ namespace PlantsVsZombie
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
         List<DrawZombie> zombiesASupprimer = new List<DrawZombie>();
+        private int clicsItem2 = 0;
 
 
         private Image backgroundImage;
@@ -22,6 +23,8 @@ namespace PlantsVsZombie
         public Garden(List<DrawZombie> fleet, DrawBackgroundPlants fond)
         {
             InitializeComponent();
+
+
 
             // Charger l'image d'arrière-plan et d'autres initialisations
             backgroundImage = Image.FromFile(@"..\..\..\Images PVZ\backgroundJeu.png");
@@ -80,19 +83,44 @@ namespace PlantsVsZombie
                 {
                     // Réduire l'argent du joueur par le coût de la plante
                     argentJoueur -= coutPlantes[i];
-                    if (coutPlantes[i] == 1)
+
+                    // Si c'est l'item 2 (index 1 du tableau), après 2 secondes, augmenter l'argent du joueur de 25
+                    if (i == 1) // Index 1 correspond à l'item 2
                     {
-                        Thread.Sleep(2000);
-                        string texteStatut = $"Argent: {argentJoueur +25} | Vies: {viesJoueur}";
-                        Font policeStatut = new Font("Arial", 20);
-                        Brush pinceauStatut = Brushes.Black;
-                        airspace.Graphics.DrawString(texteStatut, policeStatut, pinceauStatut, 10, 10); // 10,10 correspond à la position sur l'écran
+                        clicsItem2++; // Incrémenter le nombre de clics sur l'item 2
+                        int montantAjoute = clicsItem2 * 25; // Le montant à ajouter dépend du nombre de clics
+
+                        // Démarrer une tâche qui va continuer à augmenter l'argent toutes les 2 secondes
+                        Task.Run(async () =>
+                        {
+                            while (true)
+                            {
+                                await Task.Delay(2000); // Attendre 2 secondes
+
+                                // Mettre à jour l'argent dans le thread principal de l'UI
+                                this.Invoke((Action)(() =>
+                                {
+                                    argentJoueur += montantAjoute; // Ajouter le montant calculé
+
+                                    // Mettre à jour l'affichage de l'argent et des vies
+                                    string texteStatut = $"Argent: {argentJoueur} | Vies: {viesJoueur}";
+                                    Font policeStatut = new Font("Arial", 20);
+                                    Brush pinceauStatut = Brushes.Black;
+                                    airspace.Graphics.DrawString(texteStatut, policeStatut, pinceauStatut, 10, 10); // Position sur l'écran
+                                    airspace.Render(); // Rafraîchir l'affichage
+                                }));
+                            }
+                        });
                     }
+
+
+
+
                     // Quittez la boucle après avoir trouvé le rectangle cliqué
                     break;
                 }
             }
-        }
+        }// fin Garden_MouseClick
         // Affichage de la situation actuelle
         private void Render()
         {
@@ -121,90 +149,7 @@ namespace PlantsVsZombie
         }
 
 
-        private bool PeutAcheterPlante(int coutPlante)
-        {
-            return argentJoueur >= coutPlante;
-        }
-        private bool PeutAcheterPlanteSolei(int coutPlanteSoleil)
-        {
-            return argentJoueur >= coutPlanteSoleil;
-        }
-        private bool PeutAcheterPlanteWallNut(int coutPlanteWallNut)
-        {
-            return argentJoueur >= coutPlanteWallNut;
-        }
-        private bool PeutAcheterPlanteGlace(int coutPlanteGlace)
-        {
-            return argentJoueur >= coutPlanteGlace;
-        }
-        private bool PeutAcheterPlanteDouble(int coutPlanteDouble)
-        {
-            return argentJoueur >= coutPlanteDouble;
-        }
 
-        private void EssayerPlacerPlante(int indicePlante)
-        {
-            int coutPlante = 100;            // Exemple de coût pour une plante
-            int coutPlanteSoleil = 50;       // Exemple de coût pour une plante soleil
-            int coutPlanteWallNut = 50;      // Exemple de coût pour une plante wallnut
-            int coutPlanteGlace = 150;       // Exemple de coût pour une plante glace
-            int coutPlanteDouble = 200;      // Exemple de coût pour une plante double
-
-            if (PeutAcheterPlante(coutPlante))
-            {
-                // Réduire l'argent du joueur
-                argentJoueur -= coutPlante;
-
-                // Logique pour placer la plante
-                // fleetPlantes.Add(new DrawPlants(...));
-
-                MessageBox.Show("Plante placée !");
-            }
-            else if (PeutAcheterPlanteSolei(coutPlanteSoleil))
-            {
-                // Réduire l'argent du joueur
-                argentJoueur -= coutPlanteSoleil;
-
-                // Logique pour placer la plante
-                // fleetPlantes.Add(new DrawPlants(...));
-
-                MessageBox.Show("Plante placée !");
-            }
-            else if (PeutAcheterPlanteWallNut(coutPlanteWallNut))
-            {
-                // Réduire l'argent du joueur
-                argentJoueur -= coutPlanteWallNut;
-
-                // Logique pour placer la plante
-                // fleetPlantes.Add(new DrawPlants(...));
-
-                MessageBox.Show("Plante placée !");
-            }
-            else if (PeutAcheterPlanteGlace(coutPlanteGlace))
-            {
-                // Réduire l'argent du joueur
-                argentJoueur -= coutPlanteGlace;
-
-                // Logique pour placer la plante
-                // fleetPlantes.Add(new DrawPlants(...));
-
-                MessageBox.Show("Plante placée !");
-            }
-            else if (PeutAcheterPlanteDouble(coutPlanteDouble))
-            {
-                // Réduire l'argent du joueur
-                argentJoueur -= coutPlanteDouble;
-
-                // Logique pour placer la plante
-                // fleetPlantes.Add(new DrawPlants(...));
-
-                MessageBox.Show("Plante placée !");
-            }
-            else
-            {
-                MessageBox.Show("Argent insuffisant !");
-            }
-        }
 
         // Calcul du nouvel état après que 'interval' millisecondes se sont écoulées
         private void Update(int interval)
