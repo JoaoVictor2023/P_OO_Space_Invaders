@@ -88,7 +88,6 @@ namespace PlantsVsZombie
                     if (i == 1) // Index 1 correspond à l'item 2
                     {
                         clicsItem2++; // Incrémenter le nombre de clics sur l'item 2
-                        int montantAjoute = clicsItem2 * 25; // Le montant à ajouter dépend du nombre de clics
 
                         // Démarrer une tâche qui va continuer à augmenter l'argent toutes les 2 secondes
                         Task.Run(async () =>
@@ -100,7 +99,7 @@ namespace PlantsVsZombie
                                 // Mettre à jour l'argent dans le thread principal de l'UI
                                 this.Invoke((Action)(() =>
                                 {
-                                    argentJoueur += montantAjoute; // Ajouter le montant calculé
+                                    argentJoueur += 25; // Ajouter le montant calculé
 
                                     // Mettre à jour l'affichage de l'argent et des vies
                                     string texteStatut = $"Argent: {argentJoueur} | Vies: {viesJoueur}";

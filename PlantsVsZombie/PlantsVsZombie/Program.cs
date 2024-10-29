@@ -52,7 +52,7 @@ namespace PlantsVsZombie
             DrawZombie zombie = new DrawZombie();
 
             // Sélectionner une position aléatoire à partir de la liste
-            var positionAleatoire = positionsPredifinies[random.Next(positionsPredifinies.Count)];
+            var positionAleatoire = positionsPredifinies[random.Next(1, positionsPredifinies.Count)];
             zombie.x = positionAleatoire.x;
             zombie.y = positionAleatoire.y;
 
