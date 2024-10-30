@@ -8,10 +8,12 @@ namespace PlantsVsZombie
         private Image droneImage;
         private bool isSelected; // Indicateur de sélection
 
-        public DrawPlants()
+        // Constructeur mis à jour pour accepter une image et une position
+        public DrawPlants(Image image, Point position)
         {
-            // Charger l'image animée de la plante
-            droneImage = Image.FromFile(@"..\..\..\Images PVZ\mainPlant.png");
+            droneImage = image;
+            x = position.X;
+            y = position.Y;
             isSelected = false; // Initialiser la sélection à faux
         }
 
@@ -44,5 +46,4 @@ namespace PlantsVsZombie
             }
         }
     }
-
 }
