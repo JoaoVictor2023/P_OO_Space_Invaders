@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.Timers; // Utilisation de System.Timers.Timer
-
+using System.Windows.Forms;
 namespace PlantsVsZombie
 {
     internal static class Program
@@ -75,6 +76,7 @@ namespace PlantsVsZombie
             SetRandomTimerInterval();
         }
 
+        
         // Méthode pour définir un intervalle aléatoire entre 5 et 10 secondes
         private static void SetRandomTimerInterval()
         {

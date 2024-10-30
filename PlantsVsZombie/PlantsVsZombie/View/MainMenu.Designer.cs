@@ -28,17 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            SuspendLayout();
             // 
             // MainMenu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(TextHelpers.WIDTH, TextHelpers.HEIGHT);
-            this.Name = "MainMenu";
-            this.Text = "Menu Principal";
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1200, 600);
+            Name = "MainMenu";
+            Text = "Menu Principal";
+            ResumeLayout(false);
         }
 
         #endregion

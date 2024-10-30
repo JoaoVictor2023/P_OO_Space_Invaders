@@ -7,6 +7,8 @@ namespace PlantsVsZombie
     {
         private Image droneImage;
         private bool isSelected; // Indicateur de sélection
+        private Rectangle collisionRectangle;           // Zone de collision du zombie
+
 
         // Constructeur mis à jour pour accepter une image et une position
         public DrawPlants(Image image, Point position)
@@ -15,6 +17,8 @@ namespace PlantsVsZombie
             x = position.X;
             y = position.Y;
             isSelected = false; // Initialiser la sélection à faux
+            collisionRectangle = new Rectangle(x, y, 50, 100); // Ajustez la taille du rectangle de collision
+
         }
 
         public void Select()
@@ -31,7 +35,10 @@ namespace PlantsVsZombie
         {
             return isSelected; // Retourne si la plante est sélectionnée
         }
-
+        public Rectangle GetCollisionRectangle()
+        {
+            return collisionRectangle; // Retourner la zone de collision
+        }
         public void Render(BufferedGraphics drawingSpace)
         {
             // Dessiner l'image de la plante
@@ -41,7 +48,7 @@ namespace PlantsVsZombie
             // Dessiner un contour si la plante est sélectionnée
             if (isSelected)
             {
-                Pen pen = new Pen(Color.Red, 2); // Contour rouge
+                Pen pen = new Pen(Color.Red, 99); // Contour rouge
                 drawingSpace.Graphics.DrawRectangle(pen, new Rectangle(x - 16, y - 16, 85, 128));
             }
         }

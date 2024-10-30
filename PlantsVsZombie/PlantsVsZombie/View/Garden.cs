@@ -1,4 +1,4 @@
-using Microsoft.VisualBasic.Devices;
+Ôªøusing Microsoft.VisualBasic.Devices;
 using System.Drawing;
 namespace PlantsVsZombie
 {
@@ -14,16 +14,17 @@ namespace PlantsVsZombie
         private BufferedGraphics airspace;
         private List<DrawZombie> zombiesASupprimer = new List<DrawZombie>();
         private int clicsItem2 = 0;
+        private  List<DrawPlants> plantes = new List<DrawPlants>();
 
         private Image backgroundImage;
         private bool backgroundLoaded = false;
-        private int? planteSelectionnee = null; // Index de la plante sÈlectionnÈe, ou null si aucune sÈlection
+        private int? planteSelectionnee = null; // Index de la plante s√©lectionn√©e, ou null si aucune s√©lection
 
         public Garden(List<DrawZombie> fleet, DrawBackgroundPlants fond)
         {
             InitializeComponent();
 
-            // Charger l'image d'arriËre-plan et d'autres initialisations
+            // Charger l'image d'arri√®re-plan et d'autres initialisations
             backgroundImage = Image.FromFile(@"..\..\..\Images PVZ\backgroundJeu.png");
             backgroundLoaded = true;
 
@@ -56,11 +57,11 @@ namespace PlantsVsZombie
         {
             if (planteSelectionnee.HasValue)
             {
-                // CrÈer et ajouter la plante ‡ la position du clic dans le cadre de jeu
+                // Cr√©er et ajouter la plante √† la position du clic dans le cadre de jeu
                 var nouvellePlante = new DrawPlants(plantImages[planteSelectionnee.Value], e.Location);
                 fleetPlantes.Add(nouvellePlante);
 
-                // DÈselectionner la plante
+                // D√©selectionner la plante
                 planteSelectionnee = null;
 
                 // Redessiner pour afficher la nouvelle plante
@@ -68,58 +69,67 @@ namespace PlantsVsZombie
             }
             else
             {
-                // DÈfinir les dimensions de chaque rectangle orange
+                // D√©finir les dimensions de chaque rectangle orange
                 int rectWidth = 165;
                 int rectHeight = 90;
 
                 // Positions Y des rectangles
-                int startY = 67; // Position de dÈpart
+                int startY = 67; // Position de d√©part
                 int spacing = 15; // Espacement entre les rectangles
 
-                // Co˚ts des plantes
+                // Co√ªts des plantes
                 int[] coutPlantes = { 100, 50, 50, 150, 200 };
 
-                // VÈrifiez si le clic de la souris est dans chaque rectangle
+                // V√©rifiez si le clic de la souris est dans chaque rectangle
                 for (int i = 0; i < coutPlantes.Length; i++)
                 {
                     int rectX = 50; // Position X fixe pour tous les rectangles
                     int rectY = startY + i * (rectHeight + spacing);
 
-                    // VÈrifiez si le clic de la souris est dans le rectangle
+                    // V√©rifiez si le clic de la souris est dans le rectangle
                     if (e.X >= rectX && e.X <= rectX + rectWidth && e.Y >= rectY && e.Y <= rectY + rectHeight)
                     {
-                        // RÈduire l'argent du joueur par le co˚t de la plante
-                        argentJoueur -= coutPlantes[i];
-
-                        // Enregistrer líindex de la plante sÈlectionnÈe
-                        planteSelectionnee = i;
-
-                        // Si c'est l'item 2 (index 1 du tableau), aprËs 2 secondes, augmenter l'argent du joueur de 25
-                        if (i == 1) // Index 1 correspond ‡ l'item 2
+                        // R√©duire l'argent du joueur par le co√ªt de la plante
+                        if (coutPlantes[i] <= argentJoueur)
                         {
-                            clicsItem2++; // IncrÈmenter le nombre de clics sur l'item 2
+                            argentJoueur -= coutPlantes[i];
 
-                            // DÈmarrer une t‚che qui va continuer ‡ augmenter l'argent toutes les 2 secondes
-                            Task.Run(async () =>
+
+
+                            // Enregistrer l‚Äôindex de la plante s√©lectionn√©e
+                            planteSelectionnee = i;
+
+                            // Si c'est l'item 2 (index 1 du tableau), apr√®s 2 secondes, augmenter l'argent du joueur de 25
+                            if (i == 1) // Index 1 correspond √† l'item 2
                             {
-                                while (true)
+                                clicsItem2++; // Incr√©menter le nombre de clics sur l'item 2
+
+                                // D√©marrer une t√¢che qui va continuer √† augmenter l'argent toutes les 2 secondes
+                                Task.Run(async () =>
                                 {
-                                    await Task.Delay(2000); // Attendre 2 secondes
-
-                                    // Mettre ‡ jour l'argent dans le thread principal de l'UI
-                                    this.Invoke((Action)(() =>
+                                    while (true)
                                     {
-                                        argentJoueur += 25; // Ajouter le montant calculÈ
+                                        await Task.Delay(2000); // Attendre 2 secondes
 
-                                        // Mettre ‡ jour l'affichage de l'argent et des vies
-                                        string texteStatut = $"Argent: {argentJoueur} | Vies: {viesJoueur}";
-                                        Font policeStatut = new Font("Arial", 20);
-                                        Brush pinceauStatut = Brushes.Black;
-                                        airspace.Graphics.DrawString(texteStatut, policeStatut, pinceauStatut, 10, 10); // Position sur l'Ècran
-                                        airspace.Render(); // RafraÓchir l'affichage
-                                    }));
-                                }
-                            });
+                                        // Mettre √† jour l'argent dans le thread principal de l'UI
+                                        this.Invoke((Action)(() =>
+                                        {
+                                            argentJoueur += 25; // Ajouter le montant calcul√©
+
+                                            // Mettre √† jour l'affichage de l'argent et des vies
+                                            string texteStatut = $"Argent: {argentJoueur} | Vies: {viesJoueur}";
+                                            Font policeStatut = new Font("Arial", 20);
+                                            Brush pinceauStatut = Brushes.Black;
+                                            airspace.Graphics.DrawString(texteStatut, policeStatut, pinceauStatut, 10, 10); // Position sur l'√©cran
+                                            airspace.Render(); // Rafra√Æchir l'affichage
+                                        }));
+                                    }
+                                });
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Argent insuffisant pour acheter cette plante.", "Achat impossible", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         break;
                     }
@@ -130,6 +140,7 @@ namespace PlantsVsZombie
         // Affichage de la situation actuelle
         private void Render()
         {
+
             // Dessiner le fond
             if (backgroundLoaded && backgroundImage != null)
             {
@@ -151,7 +162,7 @@ namespace PlantsVsZombie
             // Dessiner les plantes
             fond.Render(airspace, plantImages, plantTexts);
 
-            // Dessiner les plantes placÈes
+            // Dessiner les plantes plac√©es
             foreach (DrawPlants plante in fleetPlantes)
             {
                 plante.Render(airspace);
@@ -160,7 +171,7 @@ namespace PlantsVsZombie
             airspace.Render();
         }
 
-        // Calcul du nouvel Ètat aprËs que 'interval' millisecondes se sont ÈcoulÈes
+        // Calcul du nouvel √©tat apr√®s que 'interval' millisecondes se sont √©coul√©es
         private void Update(int interval)
         {
             var zombiesAMettreAJour = new List<DrawZombie>(fleet);
@@ -169,11 +180,11 @@ namespace PlantsVsZombie
             {
                 zombie.Update(interval);
 
-                // VÈrifiez si le zombie est hors limites
+                // V√©rifiez si le zombie est hors limites
                 if (zombie.IsOutOfBounds(300))
                 {
                     zombiesASupprimer.Add(zombie);
-                    viesJoueur--; // RÈduire une vie lorsque le zombie dÈpasse les limites
+                    viesJoueur--; // R√©duire une vie lorsque le zombie d√©passe les limites
                     if (viesJoueur <= 0)
                     {
                         Environment.Exit(0);
@@ -188,7 +199,7 @@ namespace PlantsVsZombie
             }
         }
 
-        // MÈthode appelÈe ‡ chaque frame
+        // M√©thode appel√©e √† chaque frame
         private void NewFrame(object sender, EventArgs e)
         {
             this.Update(ticker.Interval);
